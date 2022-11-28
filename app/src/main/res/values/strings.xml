@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PagingData3VP</string>
+    <string name="text_retry_paging">Retry Paging</string>
 </resources>

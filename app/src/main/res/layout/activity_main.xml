@@ -9,6 +9,7 @@
         tools:context=".ui.MainActivity">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pull_to_request"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

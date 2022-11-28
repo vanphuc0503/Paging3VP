@@ -5,8 +5,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import com.vanphuc.pagingdata3vp.R
 import com.vanphuc.pagingdata3vp.databinding.ActivityMainBinding
+import com.vanphuc.pagingdata3vp.ui.adapter.ExampleLoadStateAdapter
 import com.vanphuc.pagingdata3vp.ui.adapter.NewsAdapter
 import com.vanphuc.pagingdata3vp.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initViews() {
         viewBinding.apply {
-            recyclerNews.adapter = newsAdapter
+            recyclerNews.adapter = newsAdapter.withLoadStateHeaderAndFooter(
+                header = ExampleLoadStateAdapter(newsAdapter::retry),
+                footer = ExampleLoadStateAdapter(newsAdapter::retry),
+            )
+            pullToRequest.setOnRefreshListener {
+                newsAdapter.refresh()
+            }
         }
     }
 
@@ -39,8 +47,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.apply {
-                    userItemsUiStates?.collect {
+                    userItemsUiStates?.collectLatest {
                         newsAdapter.submitData(it)
+                        viewBinding.pullToRequest.isRefreshing = false
                     }
                 }
             }

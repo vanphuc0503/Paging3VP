@@ -25,9 +25,7 @@ class NewsRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 NewsPagingDataSource {
                     val data = newsApi.getNews(q, it)
-                    (data as? NetworkResponse.Success)?.body?.let {
-                        it.articles
-                    } ?: mutableListOf()
+                    (data as? NetworkResponse.Success)?.body?.articles ?: mutableListOf()
                 }
             }
         ).flow
