@@ -6,7 +6,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.room.Room
 import com.vanphuc.pagingdata3vp.R
+import com.vanphuc.pagingdata3vp.data.datasource.local.AppDatabase
 import com.vanphuc.pagingdata3vp.databinding.ActivityMainBinding
 import com.vanphuc.pagingdata3vp.ui.adapter.ExampleLoadStateAdapter
 import com.vanphuc.pagingdata3vp.ui.adapter.NewsAdapter

@@ -1,13 +1,18 @@
 package com.vanphuc.pagingdata3vp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.vanphuc.pagingdata3vp.data.datasource.local.AppDatabase
+import com.vanphuc.pagingdata3vp.data.datasource.local.NewsDao
 import com.vanphuc.pagingdata3vp.data.datasource.remote.ApiKeyInterceptor
 import com.vanphuc.pagingdata3vp.data.datasource.remote.NewsApi
 import com.vanphuc.pagingdata3vp.data.network.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -69,4 +74,12 @@ object NetworkModule {
     @Singleton
     fun provideCompetitionApi(retrofit: Retrofit): NewsApi =
         retrofit.create(NewsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(context, AppDatabase::class.java, "pagingDatabase").build()
+
+    @Provides
+    fun provideNewDao(appDatabase: AppDatabase): NewsDao = appDatabase.newsDao()
 }
